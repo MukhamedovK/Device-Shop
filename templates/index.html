@@ -1,0 +1,230 @@
+{% extends 'base.html' %}
+
+
+{% block title %}
+<title>Home page</title>
+{% endblock %}
+
+
+{% block content %}
+{% load static %}
+{% load i18n %}
+<main>
+    <div class="banner card container">
+        <div class="banner__left">
+            <button id="{{ main_categories.0.0.photo }}" onclick="banner_btn(this, '{{ main_categories.0.0.slug }}')" class="banner__left__btn-active">{{ main_categories.0.0.name }}</button>
+            {% for i in main_categories|slice:"1:" %}
+            <button id="{{ i.0.photo }}" onclick="banner_btn(this, '{{ i.0.slug }}')" class="banner__left__btn">{{ i.0.name }}</button>
+            {% endfor %}
+        </div>
+        <div class="banner__right">
+            <div class="banner__image" style="background-image: url('media/{{ main_categories.0.0.photo }}');"></div>
+            <div class="banner__right-content">
+                <h1 class="banner__right__header">{{ main_categories.0.0.name }}</h1>
+                <a href="{% url 'category_shop' main_categories.0.0.slug %}" id="view_products" class="banner__right__btn text-default-white">{% trans 'View products' %}</a>
+            </div>
+        </div>
+    </div>
+    <div class="offers card container" id="categories">
+        <div class="offers__left">
+            <div class="offers__left__text">
+                <h3>{% trans 'Deals and offers' %}</h3>
+                <p class="text-default text-muted">{% trans 'Products on sale' %}</p>
+            </div>
+            <div class="offers__left__countdown">
+                <div class="offers__left__countdown-item" id="days">
+                    <p class="text-700-white">00</p>
+                    <p class="text-micro-white">{% trans 'Days' %}</p>
+                </div>
+                <div class="offers__left__countdown-item" id="hours">
+                    <p class="text-700-white">00</p>
+                    <p class="text-micro-white">{% trans 'Hours' %}</p>
+                </div>
+                <div class="offers__left__countdown-item" id="minutes">
+                    <p class="text-700-white">00</p>
+                    <p class="text-micro-white">{% trans 'Hours' %}</p>
+                </div>
+                <div class="offers__left__countdown-item" id="seconds">
+                    <p class="text-700-white">00</p>
+                    <p class="text-micro-white">{% trans 'Seconds' %}</p>
+                </div>
+            </div>
+        </div>
+        <div class="offers__right">
+            {% for i in products_on_sale %}
+            <a href="{% url 'shop' %}" class="offers__right-item">
+                <div class="image-container">
+                    <img src="/media/{{ i.1 }}" alt="" class="zoomable-image">
+                    <div class="overlay"></div>
+                    <div class="eye" style='background: url("/media/eye.png") no-repeat center center / cover;'></div>
+                </div>
+                <p class="text-default">{{ i.0.product.name }}</p>
+                <div class="offers__right__sale">
+                    <p>-{{ i.0.sale }}%</p>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="categories card container" id="help">
+        <div class="categories__left">
+            <div class="categories__left__image" style="background-image: url('/media/categories_bg.png');"></div>
+            <div class="categories__left-content">
+                <h3>{% trans 'Consumer electronics and gadgets' %}</h3>
+                <a href="" class="banner__right__btn text-default-white">{% trans 'View' %}</a>
+            </div>
+        </div>
+        <div class="categories__right">
+            {% for i in main_categories %}
+            <a href="{% url 'shop' %}" class="categories__right-item">
+                <div class="categories__right-item-content">
+                    <p class="text-default">{{ i.0.name }}</p>
+                    <p class="text-micro text-muted">{% trans 'From' %}<br>{{ i.1 }}$</p>
+                </div>
+                <img src="/media/{{ i.0.photo }}" class="categories__right-item__photo" alt="">
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="message container">
+        <div class="message__photo" style="background-image: url('/media/message_bg.png');"></div>
+        <div class="message__left">
+            <h1 class="header-white">{% trans 'An easy way to ask question' %}</h1>
+            <p class="text-default-white">{% trans 'Ask your question here, we will send answer on your gmail' %}</p>
+        </div>
+        <div class="message__right">
+            <div class="message__right-content">
+                <h3>{% trans 'Want to ask a question?' %}</h3>
+                <form method="post" class="message__right__form">
+                    <!-- {% csrf_token %} -->
+                    <input type="text" name="question_title" class="default-input text-default" placeholder="{% trans 'Question' %}">
+                    <textarea name="question" cols="30" rows="4" class="default-textarea text-default" placeholder="{% trans 'Write more about the question' %}"></textarea>
+                    <button class="banner__right__btn text-default-white" id="recommended">{% trans 'Ask a question' %}</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="recommended container">
+        <h2>{% trans 'Recommended items' %}</h2>
+        <div class="recommended__cards">
+            {% for i in products %}
+            <a href="{% url 'shop' %}" class="recommended__card card">
+                <div class="image-container2">
+                    <img src="/media/{{ i.1 }}" alt="" class="recommended__card__photo">
+                    <div class="overlay"></div>
+                    <div class="eye2" style='background: url("/media/eye.png") no-repeat center center / cover;'></div>
+                </div>
+                <div class="recommended__card-text">
+                    <p class="text-500">${{ i.0.price }}</p>
+                    <p class="text-default text-muted">{{ i.0.name }}</p>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="brands-wrapper container">
+        <h2 id="brands">{% trans 'Our brands' %}</h2>
+        <div class="brands">
+            <a href="" class="brand">
+                <img src="/media/logos/asus.png" alt="">
+            </a>
+            <a href="" class="brand">
+                <img src="/media/logos/logitech.png" alt="">
+            </a>
+            <a href="" class="brand">
+                <img src="/media/logos/nvidia.png" alt="">
+            </a>
+            <a href="" class="brand">
+                <img src="/media/logos/iphone.png" alt="">
+            </a>
+            <a href="" class="brand">
+                <img src="/media/logos/samsung.png" alt="">
+            </a>
+        </div>
+    </div>
+</main>
+<script>
+    function open_menu() {
+        document.querySelector('.mobile-menu-wrapper').hidden = false;
+    }
+    document.querySelector('.mobile-menu-wrapper').addEventListener('click', function() {
+        document.querySelector('.mobile-menu-wrapper').hidden = true;
+    })
+</script>
+<script>
+    images = document.querySelectorAll('.image-container')
+    images.forEach(function (i) {
+        i.addEventListener('click', function(event) {
+            event.preventDefault();
+            document.getElementById('zoom-modal').style.display = 'block';
+            let src
+            if (event.target.classList[0] == 'eye') {
+                src = event.target.previousElementSibling.previousElementSibling
+            } else {
+                src = event.target.previousElementSibling
+            }
+            document.getElementById('zoom-modal').children[0].src = src.src
+        });
+    })
+    document.getElementById('zoom-modal').addEventListener('click', function () {
+        document.getElementById('zoom-modal').style.display = 'none';
+    })
+</script>
+<script>
+    images = document.querySelectorAll('.image-container2')
+    images.forEach(function (i) {
+        i.addEventListener('click', function(event) {
+            event.preventDefault();
+            document.getElementById('zoom-modal').style.display = 'block';
+            let src
+            if (event.target.classList[0] == 'eye2') {
+                src = event.target.previousElementSibling.previousElementSibling
+            } else {
+                src = event.target.previousElementSibling
+            }
+            document.getElementById('zoom-modal').children[0].src = src.src
+        });
+    })
+    document.getElementById('zoom-modal').addEventListener('click', function () {
+        document.getElementById('zoom-modal').style.display = 'none';
+    })
+</script>
+<script src="{% static 'script.js' %}"></script>
+<script>
+    setInterval(function () {
+        let active = document.querySelector('.banner__left__btn-active')
+        if (active.nextElementSibling != null) {
+            active.nextElementSibling.click()
+        } else {
+            document.querySelector('.banner__left__btn').click()
+        }
+    }, 3000)
+</script>
+<script>
+    const countDownDate = new Date("{{ closest_date_sale }}").getTime();
+    const x = setInterval(function() {
+    const now = new Date().getTime();
+    const distance = countDownDate - now;
+    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+    document.getElementById("days").children[0].innerHTML = days;
+    document.getElementById("hours").children[0].innerHTML = hours;
+    document.getElementById("minutes").children[0].innerHTML = minutes;
+    document.getElementById("seconds").children[0].innerHTML = seconds;
+    if (distance < 0) {
+        clearInterval(x);
+        document.getElementById("days").innerHTML = "EXPIRED";
+    }
+}, 1000);
+</script>
+<script>
+    function open_menu() {
+        document.querySelector('.mobile-menu-wrapper').hidden = false;
+    }
+    document.querySelector('.mobile-menu-wrapper').addEventListener('click', function() {
+        document.querySelector('.mobile-menu-wrapper').hidden = true;
+    })
+</script>
+{% endblock %}

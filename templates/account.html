@@ -1,0 +1,314 @@
+{% extends 'base.html' %}
+
+
+{% block title %}
+<title>Account page</title>
+{% endblock %}
+
+
+{% block content %}
+{% load i18n %}
+<main>
+    <div class="user container">
+        <div class="user__left">
+            <button onclick="profileContent_btn(this)" id="1" class="banner__left__btn-active">{% trans 'Our brands' %}
+            </button>
+            <button onclick="profileContent_btn(this)" id="2" class="banner__left__btn">{% trans 'All orders' %}
+            </button>
+            <a href="{% url 'logout' %}" class="banner__left__btn">{% trans 'Logout' %}</a>
+        </div>
+        <div class="user__right-wrapper">
+            <div id="content_1" class="user__right card" style="display: block;">
+                <h2>{% trans 'Personal info' %}</h2>
+                <div class="user__right__info">
+                    <form id="avatar_form" action="" method="post" class="user__right__info__form"
+                          enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="image-container6">
+                            {% if profile.photo %}
+                            <img src="/media/{{ profile.photo }}" alt="" class="zoomable-image">
+                            {% else %}
+                            <img src="/media/products/product_1.png" alt="" class="zoomable-image">
+                            {% endif %}
+                            <div class="overlay2"></div>
+                            <div class="eye3"
+                                 style='background: url("/media/eye.png") no-repeat center center / cover;'></div>
+                        </div>
+                        <input onchange="clickInput()" id="input_file" type="file" name="photo" hidden>
+                        <button type="button" id="photo_btn" class="user__right__info__btn">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white"
+                                 class="bi bi-image" viewBox="0 0 16 16">
+                                <path d="M6.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0"/>
+                                <path d="M2.002 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2h-12zm12 1a1 1 0 0 1 1 1v6.5l-3.777-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12V3a1 1 0 0 1 1-1h12"/>
+                            </svg>
+                        </button>
+                    </form>
+                    <div class="user__right__info__text">
+                        <p class="text-default">{{ profile.user }}</p>
+                        <form action="" method="post" class="user__right__info__flex">
+                            {% csrf_token %}
+                            <div class="user__right__info__text__form">
+                                <input type="text" name="email" id="email_input" class="card text-default" hidden>
+                                <p class="text-default" id="email">{% trans 'Email' %}:<span>{{ profile.user.email }}</span></p>
+                                <svg id="edit_email" onclick="change_email()" xmlns="http://www.w3.org/2000/svg"
+                                     width="16" height="16" fill="#0d6efd" class="bi bi-pencil-fill"
+                                     viewBox="0 0 16 16">
+                                    <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z"/>
+                                </svg>
+                                <svg style="display: none;" id="save_email" onclick="change_email()"
+                                     xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#0d6efd"
+                                     class="bi bi-floppy-fill" viewBox="0 0 16 16">
+                                    <path d="M0 1.5A1.5 1.5 0 0 1 1.5 0H3v5.5A1.5 1.5 0 0 0 4.5 7h7A1.5 1.5 0 0 0 13 5.5V0h.086a1.5 1.5 0 0 1 1.06.44l1.415 1.414A1.5 1.5 0 0 1 16 2.914V14.5a1.5 1.5 0 0 1-1.5 1.5H14v-5.5A1.5 1.5 0 0 0 12.5 9h-9A1.5 1.5 0 0 0 2 10.5V16h-.5A1.5 1.5 0 0 1 0 14.5z"/>
+                                    <path d="M3 16h10v-5.5a.5.5 0 0 0-.5-.5h-9a.5.5 0 0 0-.5.5zm9-16H4v5.5a.5.5 0 0 0 .5.5h7a.5.5 0 0 0 .5-.5zM9 1h2v4H9z"/>
+                                </svg>
+                            </div>
+
+
+                            <div class="user__right__info__text__form">
+                                <input type="text" name="phone_number" id="phone_input" class="card text-default"
+                                       hidden>
+                                <p class="text-default" id="phone">{% trans 'Phone Number' %}:<span>{{ profile.phone_number }}</span>
+                                </p>
+                                <svg id="edit_phone" onclick="change_phone()" xmlns="http://www.w3.org/2000/svg"
+                                     width="16" height="16" fill="#0d6efd" class="bi bi-pencil-fill"
+                                     viewBox="0 0 16 16">
+                                    <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z"/>
+                                </svg>
+                                <svg style="display: none;" id="save_phone" onclick="change_phone()"
+                                     xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#0d6efd"
+                                     class="bi bi-floppy-fill" viewBox="0 0 16 16">
+                                    <path d="M0 1.5A1.5 1.5 0 0 1 1.5 0H3v5.5A1.5 1.5 0 0 0 4.5 7h7A1.5 1.5 0 0 0 13 5.5V0h.086a1.5 1.5 0 0 1 1.06.44l1.415 1.414A1.5 1.5 0 0 1 16 2.914V14.5a1.5 1.5 0 0 1-1.5 1.5H14v-5.5A1.5 1.5 0 0 0 12.5 9h-9A1.5 1.5 0 0 0 2 10.5V16h-.5A1.5 1.5 0 0 1 0 14.5z"/>
+                                    <path d="M3 16h10v-5.5a.5.5 0 0 0-.5-.5h-9a.5.5 0 0 0-.5.5zm9-16H4v5.5a.5.5 0 0 0 .5.5h7a.5.5 0 0 0 .5-.5zM9 1h2v4H9z"/>
+                                </svg>
+                            </div>
+
+
+                            <div class="user__right__info__text__form">
+                                <input type="text" name="password" id="password_input" class="card text-default"
+                                       hidden>
+                                <p class="text-default" id="password">{% trans 'Password' %}:<span>edit password</span>
+                                </p>
+                                <svg id="edit_password" onclick="change_password()" xmlns="http://www.w3.org/2000/svg"
+                                     width="16" height="16" fill="#0d6efd" class="bi bi-pencil-fill"
+                                     viewBox="0 0 16 16">
+                                    <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z"/>
+                                </svg>
+                                <svg style="display: none;" id="save_password" onclick="change_password()"
+                                     xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#0d6efd"
+                                     class="bi bi-floppy-fill" viewBox="0 0 16 16">
+                                    <path d="M0 1.5A1.5 1.5 0 0 1 1.5 0H3v5.5A1.5 1.5 0 0 0 4.5 7h7A1.5 1.5 0 0 0 13 5.5V0h.086a1.5 1.5 0 0 1 1.06.44l1.415 1.414A1.5 1.5 0 0 1 16 2.914V14.5a1.5 1.5 0 0 1-1.5 1.5H14v-5.5A1.5 1.5 0 0 0 12.5 9h-9A1.5 1.5 0 0 0 2 10.5V16h-.5A1.5 1.5 0 0 1 0 14.5z"/>
+                                    <path d="M3 16h10v-5.5a.5.5 0 0 0-.5-.5h-9a.5.5 0 0 0-.5.5zm9-16H4v5.5a.5.5 0 0 0 .5.5h7a.5.5 0 0 0 .5-.5zM9 1h2v4H9z"/>
+                                </svg>
+                            </div>
+                            <p class="text-danger">{{ error }}</p>
+                            <button id="submit" type="submit" hidden></button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div id="content_2" class="user__right card" style="display: none;">
+                <h2>{% trans 'My orders' %}</h2>
+                <div class="user__orders">
+                    {% if len_orders != 0 %}
+                    {% for order, products, price, image in order_data %}
+                    <div class="user__order">
+                        <div class="user__order__top">
+                            <div class="user__order__top__left">
+                                <div class="user__adress__links">
+                                    <p class="user__adress__links__id"><b>{% trans 'Order ID' %}: {{ order.id }}</b>
+                                    </p>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#9DA1A7"
+                                         class="bi bi-dot" viewBox="0 0 16 16">
+                                        <path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3"></path>
+                                    </svg>
+                                    {% if not order.status %}
+                                    <p class="user__adress__links__warning">Pending</p>
+                                    {% else %}
+                                    <p class="user__adress__links__success">Delivered</p>
+                                    {% endif %}
+                                </div>
+                                <p class="text-default text-muted">{% trans 'Date' %}: {{ order.create_at }}</p>
+                            </div>
+                            {% if not order.status %}
+                            <div class="user__order__top__right">
+                                <a href="{% url 'cancel_order' order.id %}"
+                                   class="cart__left__product__left__content__btn-red text-default">{% trans 'Cancel order' %}</a>
+                            </div>
+                            {% endif %}
+                        </div>
+                        <div class="user__order__middle">
+                            <div class="user__order__middle-item">
+                                <p class="text-default text-muted">{% trans 'Contact' %}</p>
+                                <p class="text-default">{{ order.first_name }} {{ order.last_name }}</p>
+                                <p class="text-default">{% trans 'Phone' %}: {{ order.phone_number }}</p>
+                                <p class="text-default">{% trans 'Email' %}: {{ order.email }}</p>
+                            </div>
+                            <div class="user__order__middle-item">
+                                <p class="text-default text-muted">{% trans 'Shipping address' %}</p>
+                                <p class="text-default">{{ order.city }}</p>
+                                <p class="text-default">{{ order.pick_up }}</p>
+                            </div>
+                            <div class="user__order__middle-item">
+                                <p class="text-default text-muted">{% trans 'Payment' %}</p>
+                                <p class="text-success">{{ order.payment }}</p>
+                                <p class="text-default">{% trans 'Tax' %}: $15</p>
+                                <p class="text-default">{% trans 'Total paid' %}: ${{ order.total_price }}</p>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="user__order__bottom">
+                            {% for product in products %}
+                            <a href="{% url 'product' product.product.id %}" class="user__order__bottom-item">
+                                <div class="user__order__bottom__img card">
+                                    <img src="/media/{{ image }}" alt="">
+                                </div>
+                                <div class="user__order__bottom-item__text">
+                                    <p>{{ product.product.name }}</p>
+                                    <p><b>{{ product.quantity }}x = ${{ price }}</b></p>
+                                </div>
+                            </a>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                    {% else %}
+                    <div class="empty_text_in_profile">
+                        <a href="{% url 'shop' %}" class="text-default-primary" style="font-size: 24px;">{% trans 'Add product' %}</a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<script>
+    function profileContent_btn(btn) {
+        document.querySelectorAll('.user__right').forEach(function (i) {
+            i.style.display = 'none';
+        })
+        let active = document.querySelector('.banner__left__btn-active')
+        active.classList.remove('banner__left__btn-active')
+        active.classList.add('banner__left__btn')
+        document.querySelector(`#content_${btn.id}`).style.display = 'block'
+        btn.classList.remove('banner__left__btn')
+        btn.classList.add('banner__left__btn-active')
+    }
+
+
+    function change_address(btn) {
+        let address_text = btn.parentElement.previousElementSibling
+        if (address_text.children[1].style.display == 'block') {
+            address_text.children[1].style.display = 'none'
+            address_text.children[2].style.display = 'block'
+            address_text.children[2].value = address_text.children[1].textContent
+            btn.textContent = 'Save'
+        } else {
+            address_text.children[1].style.display = 'block'
+            address_text.children[2].style.display = 'none'
+            address_text.children[3].click()
+        }
+    }
+
+
+    let submit = document.querySelector('#submit')
+
+    let email = document.querySelector('#email')
+    let email_input = document.querySelector('#email_input')
+    let edit_svg_email = document.querySelector('#edit_email')
+    let save_svg_email = document.querySelector('#save_email')
+    function change_email() {
+        if (email_input.hidden) {
+            email_input.hidden = false
+            email_input.value = email.children[0].textContent
+            email.style.display = 'none'
+            edit_svg_email.style.display = 'none'
+            save_svg_email.style.display = 'block'
+        } else {
+            email_input.hidden = true
+            email.style.display = 'flex'
+            edit_svg_email.style.display = 'block'
+            save_svg_email.style.display = 'none'
+            submit.click()
+        }
+    }
+
+    let number = document.querySelector('#phone')
+    let phone_input = document.querySelector('#phone_input')
+    let edit_svg_phone = document.querySelector('#edit_phone')
+    let save_svg_phone = document.querySelector('#save_phone')
+
+    function change_phone() {
+        if (phone_input.hidden) {
+            phone_input.hidden = false
+            phone_input.value = number.children[0].textContent
+            number.style.display = 'none'
+            edit_svg_phone.style.display = 'none'
+            save_svg_phone.style.display = 'block'
+        } else {
+            phone_input.hidden = true
+            number.style.display = 'flex'
+            edit_svg_phone.style.display = 'block'
+            save_svg_phone.style.display = 'none'
+            submit.click()
+        }
+    }
+
+    let password = document.querySelector('#password')
+    let password_input = document.querySelector('#password_input')
+    let edit_svg_password = document.querySelector('#edit_password')
+    let save_svg_password = document.querySelector('#save_password')
+
+    function change_password() {
+        if (password_input.hidden) {
+            password_input.hidden = false
+            password_input.value = password.children[0].textContent
+            password.style.display = 'none'
+            edit_svg_password.style.display = 'none'
+            save_svg_password.style.display = 'block'
+        } else {
+            password_input.hidden = true
+            password.style.display = 'flex'
+            edit_svg_password.style.display = 'block'
+            save_svg_password.style.display = 'none'
+            submit.click()
+        }
+    }
+
+
+    let input = document.querySelector('#input_file');
+    let btn = document.querySelector('#photo_btn');
+    let avatar_form = document.querySelector('#avatar_form');
+    btn.addEventListener('click', function () {
+        input.click()
+    })
+    function clickInput() {
+        avatar_form.submit();
+    }
+
+
+    document.querySelector('.image-container6').addEventListener('click', function(event) {
+        event.preventDefault();
+        document.getElementById('zoom-modal').style.display = 'block';
+        let src
+        if (event.target.classList[0] == 'eye3') {
+            src = event.target.previousElementSibling.previousElementSibling
+        } else {
+            src = event.target.previousElementSibling
+        }
+        document.getElementById('zoom-modal').children[0].src = src.src
+    });
+    document.getElementById('zoom-modal').addEventListener('click', function () {
+        document.getElementById('zoom-modal').style.display = 'none';
+    })
+
+
+    function open_menu() {
+        document.querySelector('.mobile-menu-wrapper').hidden = false;
+    }
+    document.querySelector('.mobile-menu-wrapper').addEventListener('click', function() {
+        document.querySelector('.mobile-menu-wrapper').hidden = true;
+    })
+
+
+</script>
+{% endblock %}
