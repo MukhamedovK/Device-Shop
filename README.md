@@ -1,8 +1,8 @@
 # DeviceShop-Ecommerce
 
 COLLABORATORS
-https://github.com/Winchestor2001
-https://github.com/azizxojaev
+> <https://github.com/Winchestor2001> \n
+> <https://github.com/azizxojaev>
 
 CELERY RUN
 ```bash
