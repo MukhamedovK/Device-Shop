@@ -1,7 +1,7 @@
 # DeviceShop-Ecommerce
 
 COLLABORATORS
-> <https://github.com/Winchestor2001> \n
+> <https://github.com/Winchestor2001> <br>
 > <https://github.com/azizxojaev>
 
 CELERY RUN
